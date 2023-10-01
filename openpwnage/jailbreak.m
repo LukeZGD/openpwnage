@@ -526,6 +526,27 @@ uint32_t hardcoded_allproc(void){
         } else if ([[NSArray arrayWithObjects:@"3216.0.0.1.15~2", nil] containsObject:KernelVersion()]){ //9.0b1
             allproc = 0x45a580;
             olog("using 0x45a580\n");
+        } else if ([[NSArray arrayWithObjects:@"2784.20.34~2", nil] containsObject:KernelVersion()]){ //8.3
+            allproc = 0x3f480c;
+            olog("using 0x3f480c\n");
+        } else if ([[NSArray arrayWithObjects:@"2783.5.38~5", nil] containsObject:KernelVersion()]){ //8.2
+            allproc = 0x3e6790;
+            olog("using 0x3e6790\n");
+        } else if ([[NSArray arrayWithObjects:@"2783.3.26~3", nil] containsObject:KernelVersion()]){ //8.1.3
+            allproc = 0x3e4788;
+            olog("using 0x3e4788\n");
+        } else if ([[NSArray arrayWithObjects:@"2783.3.22~1", nil] containsObject:KernelVersion()]){ //8.1.2
+            allproc = 0x3e3764;
+            olog("using 0x3e3764\n");
+        } else if ([[NSArray arrayWithObjects:@"2783.3.13~4", nil] containsObject:KernelVersion()]){ //8.1
+            allproc = 0x3e3754;
+            olog("using 0x3e3754\n");
+        } else if ([[NSArray arrayWithObjects:@"2783.1.72~23", nil] containsObject:KernelVersion()]){ //8.0.2
+            allproc = 0x3e3754;
+            olog("using 0x3e3754\n");
+        } else if ([[NSArray arrayWithObjects:@"2783.1.72~8", nil] containsObject:KernelVersion()]){ //8.0
+            allproc = 0x3e3754;
+            olog("using 0x3e3754\n");
         } else { //8.4-8.4.1
             allproc = 0x3f4810;
             olog("using 0x3f4810\n");
@@ -568,6 +589,27 @@ uint32_t hardcoded_allproc(void){
         } else if ([[NSArray arrayWithObjects:@"3216.0.0.1.15~2", nil] containsObject:KernelVersion()]){ //9.0b1
             allproc = 0x4616c0;
             olog("using 0x4616c0\n");
+        } else if ([[NSArray arrayWithObjects:@"2784.20.34~2", nil] containsObject:KernelVersion()]){ //8.3
+            allproc = 0x3f996c;
+            olog("using 0x3f996c\n");
+        } else if ([[NSArray arrayWithObjects:@"2783.5.38~5", nil] containsObject:KernelVersion()]){ //8.2
+            allproc = 0x3ec8f0;
+            olog("using 0x3ec8f0\n");
+        } else if ([[NSArray arrayWithObjects:@"2783.3.26~3", nil] containsObject:KernelVersion()]){ //8.1.3
+            allproc = 0x3e98e8;
+            olog("using 0x3e98e8\n");
+        } else if ([[NSArray arrayWithObjects:@"2783.3.22~1", nil] containsObject:KernelVersion()]){ //8.1.2
+            allproc = 0x3e98c4;
+            olog("using 0x3e98c4\n");
+        } else if ([[NSArray arrayWithObjects:@"2783.3.13~4", nil] containsObject:KernelVersion()]){ //8.1
+            allproc = 0x3e98b4;
+            olog("using 0x3e98b4\n");
+        } else if ([[NSArray arrayWithObjects:@"2783.1.72~23", nil] containsObject:KernelVersion()]){ //8.0.2
+            allproc = 0x3e98b4;
+            olog("using 0x3e98b4\n");
+        } else if ([[NSArray arrayWithObjects:@"2783.1.72~8", nil] containsObject:KernelVersion()]){ //8.0
+            allproc = 0x3e98b4;
+            olog("using 0x3e98b4\n");
         } else { //8.4-8.4.1
             allproc = 0x3f9970;
             olog("using 0x3f9970\n");

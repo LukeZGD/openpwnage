@@ -163,7 +163,7 @@ static id static_consoleView = nil;
     //supports all 32bit devices on 9.0-9.3.6 (the kinfo leak works on 8.0-8.4.1 but the mach_ports_register() bug (CVE-2016-4669) doesn't), aka iPad 2, iPad Mini 1, iPad 3, iPad 4, iPhone 4S, iPhone 5, iPhone 5C, iPod Touch 5
     if([supportedDevices containsObject:[NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding]]){
         NSString *kver = [NSString stringWithCString:newkernv encoding:NSUTF8StringEncoding];
-        NSArray *supportedKernVers = [NSArray arrayWithObjects:@"3789.70.16~4",@"3248.61.1~1",@"3248.60.9~1",@"3248.60.8~1",@"3248.60.4~1",@"3248.60.3~3",@"3248.50.21~4",@"3248.50.20~1",@"3248.50.18~1",@"3248.41.4~2",@"3248.41.4~3",@"3248.41.3~1",@"3248.40.173.0.1~1",@"3248.40.166.0.1~1",@"3248.40.155.1.1~3",@"3248.31.3~2",@"3248.21.2~1",@"3248.21.1~2",@"3248.20.39~8",@"3248.20.33.0.1~7",@"3248.10.42~4",@"3248.10.41~1",@"3248.10.38~3",@"3248.10.27~1",@"3248.1.3~1",@"3248.1.2~3",@"3247.1.88.1.1~1",@"3247.1.56~1",@"3247.1.36.0.1~9",@"3247.1.6.1.1~2",@"3216.0.0.1.15~2",@"2784.40.6~1",@"2784.30.7~3",@"2784.30.7~1", nil];
+        NSArray *supportedKernVers = [NSArray arrayWithObjects:@"2784.40.6~1",@"2784.30.7~3",@"2784.30.7~1",@"2784.20.34~2",@"2783.5.38~5",@"2783.3.26~3",@"2783.3.22~1",@"2783.3.13~4",@"2783.1.72~23",@"2783.1.72~8", nil];
         if (!([supportedKernVers containsObject:kver])) {
             [self openpwnageConsoleLog:@"[*]your device is supported by openpwnage, but your iOS version is not\n"];
             [self openpwnageConsoleLog:@"[*]openpwnage supports 32bit 8.4b4-10.3.4 only at the moment\n"];
@@ -174,7 +174,7 @@ static id static_consoleView = nil;
             if ([@"3789.70.16~4" isEqualToString:kver]) {
                 olog("openpwnage support on 10.3.3b6/10.3.3 is not complete\n");
             }
-            if ([[NSArray arrayWithObjects:@"2784.40.6~1",@"2784.30.7~3",@"2784.20.34~2",@"2784.30.7~1",@"2784.30.5~7",nil] containsObject:kver]) {
+            if ([[NSArray arrayWithObjects:@"2784.40.6~1",@"2784.30.7~3",@"2784.30.7~1",@"2784.20.34~2",@"2783.5.38~5",@"2783.3.26~3",@"2783.3.22~1",@"2783.3.13~4",@"2783.1.72~23",@"2783.1.72~8",nil] containsObject:kver]) {
                 //olog("openpwnage support on 8.X is not complete\n");
             }
         }
@@ -246,7 +246,7 @@ static id static_consoleView = nil;
         } else {
             olog("pmap patch no success :(\n");
         }
-    } else if ([[NSArray arrayWithObjects:@"2784.40.6~1",@"2784.30.7~3",@"2784.30.7~1",@"2784.30.5~7",@"2784.20.34~2",nil] containsObject:kver]) { //iOS 8.3-8.4.1
+    } else if ([[NSArray arrayWithObjects:@"2784.40.6~1",@"2784.30.7~3",@"2784.30.7~1",@"2784.20.34~2",@"2783.5.38~5",@"2783.3.26~3",@"2783.3.22~1",@"2783.3.13~4",@"2783.1.72~23",@"2783.1.72~8",nil] containsObject:kver]) { //iOS 8.3-8.4.1
         olog("starting jb\n");
         //[self openpwnageConsoleLog:@"[*]aw yeah da hot sauce\n"];
         //consoleView.text = [[NSString alloc]initWithString:[consoleView.text stringByAppendingString:@"fill me with cum already\n"]];

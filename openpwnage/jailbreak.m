@@ -18,12 +18,15 @@
 #include <sys/stat.h>
 #include <copyfile.h>
 //#include <sys/kauth.h>
-//#include <IOKit/IOKitLib.h>
-//#include <IOKit/iokitmig.h>
+//#include "IOKit/IOKitLib.h"
+//#include "IOKit/iokitmig.h"
+#include "kpmapAndCo.h"
 
 #import "ViewController.h"
 
 #define UNSLID_BASE 0x80001000
+
+extern char **environ;
 
 void flush_all_the_streams(void) {
     fflush(stdout);
@@ -1074,7 +1077,7 @@ bool unsandbox(task_t tfp0, uintptr_t kernel_base, uintptr_t kaslr_slide) {
     //dump_kernel from p0laris/spv
     uint8_t* kdata = NULL;
     kdata = malloc(32 * 1024 * 1024);
-    dump_kernel(kdata, 32 * 1024 * 1024, tfp0, kaslr_slide);
+    //dump_kernel(kdata, 32 * 1024 * 1024, tfp0, kaslr_slide);
     if (!kdata) {
         olog("failed to dump kdata, stopping jailbreak\n");
         return false;
@@ -1124,7 +1127,7 @@ bool unsandbox(task_t tfp0, uintptr_t kernel_base, uintptr_t kaslr_slide) {
         olog("pmap patch epic fail\n");
     }
     olog("let's go for code exec...\n");
-    
+    /*
     uint32_t tfp0_patch = find_tfp0_patch(kernel_base, kdata, 32 * 1024 * 1024);
     if (tfp0_patch != 0) {
         olog("patching tfp0 at 0x%08x\n",tfp0_patch);
@@ -1132,6 +1135,7 @@ bool unsandbox(task_t tfp0, uintptr_t kernel_base, uintptr_t kaslr_slide) {
     } else {
         olog("find_tfp0_patch unsuccessful, continuing anyway\n");
     }
+    */
     
     uint32_t mount_common = kernel_base + find_mount_common(kernel_base, kdata, 32 * 1024 * 1024);
     if (mount_common != 0) {
@@ -1234,9 +1238,9 @@ bool remount(void) {
         olog("extracting bootstrap\n");
         olog("prepare to wait a long time. this should be obvious imo, but don't turn off your device.\n");
         chmod(tar_path, 0777);
-        olog("chmod'd tar_path\n");
-        char *argv_[] = {tar_path, "-xf", basebins_path, "-C", "/", "--preserve-permissions", NULL};
-        easy_spawn_bc_fuck_this(tar_path, argv_);
+        pid_t pid;
+        char *argv[] = {tar_path, "-xf", basebins_path, "-C", "/", "--preserve-permissions", NULL};
+        posix_spawn(&pid, tar_path, NULL, NULL, argv, environ);
         
         olog("disabling stashing\n");
         run_cmd("/bin/touch /.cydia_no_stash");
@@ -1432,24 +1436,20 @@ bool unsandbox8(mach_port_t tfp0, uint32_t kernel_base, uint32_t kaslr_slide) {
         const char *launchctl_path = [launchctlPathObj UTF8String];
         olog("launchctl path: %s\n",launchctl_path);
         
-        olog("copying tar\n");
-        copyfile([[[NSBundle mainBundle] resourcePath]stringByAppendingString:@"/tar"].UTF8String, "/bin/tar", NULL, COPYFILE_ALL);
-        
         olog("extracting bootstrap\n");
         olog("prepare to wait a long time. this should be obvious imo, but don't turn off your device.\n");
         chmod("/bin/tar", 0777);
         olog("chmod'd tar_path\n");
-        //pid_t pid;
-        char *argv_[] = {"/bin/tar", "-xf", basebins_path, "-C", "/", "--preserve-permissions", NULL};
-        //posix_spawn(&pid, "/bin/tar", NULL, NULL, argv, environ);
-        easy_spawn_bc_fuck_this("/bin/tar", argv_);
-        
+        pid_t pid;
+        char *argv[] = {"/bin/tar", "-xf", basebins_path, "-C", "/", "--preserve-permissions", NULL};
+        posix_spawn(&pid, "/bin/tar", NULL, NULL, argv, environ);
+
+        //olog("copying daibutsu migrator\n");
+        //copyfile([[[NSBundle mainBundle] resourcePath]stringByAppendingString:@"/com.lukezgd.daibutsumigrator.deb"].UTF8String, "/private/var/root/Media/Cydia/AutoInstall/com.lukezgd.daibutsumigrator.deb", NULL, COPYFILE_ALL);
+
         olog("disabling stashing\n");
         run_cmd("/bin/touch /.cydia_no_stash");
 
-        
-        //run_cmd("/bin/cp -p %s /bin/tar", tar_path);
-        
         olog("copying launchctl\n");
         run_cmd("/bin/cp -p %s /bin/launchctl", launchctl_path);
         

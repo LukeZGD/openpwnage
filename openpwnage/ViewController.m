@@ -11,9 +11,7 @@
 #include <sys/types.h>
 
 #import "jailbreak.h"
-#import "sock_port/exploit.h"
 #include <time.h>
-#include "sock_port/pf10.h"
 
 #define UNSLID_BASE 0x80001000
 
@@ -128,18 +126,18 @@ static id static_consoleView = nil;
         }
     }
     _settingsButton.hidden = 1;
-    
+
     consoleView.text = [NSString stringWithFormat:@"[*]openpwnage running on %@ with iOS %@\n", [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding], [[UIDevice currentDevice] systemVersion]];
     [_jbButton setImage:[UIImage imageNamed:@"openpwnageB7JailbreakingButtonopenpwnageB7JailbreakingButton.png"] forState:UIControlStateHighlighted];
     [_jbButton setImage:[UIImage imageNamed:@"openpwnageB7JailbreakingButtonopenpwnageB7JailbreakingButton.png"] forState:UIControlStateSelected];
     [_jbButton setImage:[UIImage imageNamed:@"openpwnageB7JailbreakingButtonopenpwnageB7JailbreakingButton.png"] forState:UIControlStateDisabled];
-    
+
     size_t size;
     sysctlbyname("kern.version", NULL, &size, NULL, 0);
     char *kernelVersion = malloc(size);
     sysctlbyname("kern.version", kernelVersion, &size, NULL, 0);
     olog("%s\n",kernelVersion);
-    
+
     char *newkernv = malloc(size - 44);
     char *semicolon = strchr(kernelVersion, '~');
     int indexofsemi = (int)(semicolon - kernelVersion);
@@ -149,16 +147,16 @@ static id static_consoleView = nil;
     }
     memcpy(newkernv, &kernelVersion[indexofrootxnu], indexofsemi - indexofrootxnu + 2);
     newkernv[indexofsemi - indexofrootxnu + 2] = '\0';
-        
+
     olog("Kernel Version: %s\n",newkernv);
-    
+
     olog("openpwnage stage: Beta\n");
     olog("openpwnage build 10\n");
-    
+
     //olog("olog functional!");
-    
+
     //remember to detect free space to check that the bootstrap can be installed
-    
+
     NSArray *supportedDevices = [NSArray arrayWithObjects:@"iPad2,1",@"iPad2,2",@"iPad2,3",@"iPad2,4",@"iPad2,5",@"iPad2,6",@"iPad2,7",@"iPad3,1",@"iPad3,2",@"iPad3,3",@"iPad3,4",@"iPad3,5",@"iPad3,6",@"iPhone4,1",@"iPhone5,1",@"iPhone5,2",@"iPhone5,3",@"iPhone5,4",@"iPod5,1", nil];
     //supports all 32bit devices on 9.0-9.3.6 (the kinfo leak works on 8.0-8.4.1 but the mach_ports_register() bug (CVE-2016-4669) doesn't), aka iPad 2, iPad Mini 1, iPad 3, iPad 4, iPhone 4S, iPhone 5, iPhone 5C, iPod Touch 5
     if([supportedDevices containsObject:[NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding]]){
@@ -206,7 +204,7 @@ static id static_consoleView = nil;
     char *kernelVersion = malloc(size);
     sysctlbyname("kern.version", kernelVersion, &size, NULL, 0);
     olog("%s\n",kernelVersion);
-    
+
     char *newkernv = malloc(size - 44);
     char *semicolon = strchr(kernelVersion, '~');
     int indexofsemi = (int)(semicolon - kernelVersion);
@@ -216,37 +214,10 @@ static id static_consoleView = nil;
     }
     memcpy(newkernv, &kernelVersion[indexofrootxnu], indexofsemi - indexofrootxnu + 2);
     newkernv[indexofsemi - indexofrootxnu + 2] = '\0';
-        
+
     olog("Kernel Version: %s\n",newkernv);
     NSString *kver = [NSString stringWithCString:newkernv encoding:NSUTF8StringEncoding];
-    if ([@"3789.70.16~4" isEqualToString:kver]) { //iOS 10
-        [self openpwnageConsoleLog:@"[*]starting jailbreak...\n"];
-        task_t tfp0 = sock_port_tfp0();
-        if (tfp0 == 0) {
-            olog("failed to get tfp0 :(\n");
-            exit(42);
-        }
-        [self openpwnageConsoleLog:@"[*]we tried getting tfp0, and holy shit it actually worked\n"];
-        [self openpwnageConsoleLog:[NSString stringWithFormat: @"[*]tfp0=0x%x\n", tfp0]];
-        [self openpwnageConsoleLog:@"[*]we should try getting kbase now, hold on...\n"];
-        uintptr_t kernel_base = get_kernel_base(tfp0);
-        [self openpwnageConsoleLog:@"[*]ayo, yet another success!\n"];
-        [self openpwnageConsoleLog:[NSString stringWithFormat: @"[*]huzzah, kbase=0x%08lx\n", kernel_base]];
-        [self openpwnageConsoleLog:@"[*]one more thing we need to get before patching: kaslr slide.\n"];
-        uintptr_t kaslr_slide = kernel_base - UNSLID_BASE;
-        [self openpwnageConsoleLog:@"[*]WOOO! Now we talkin'!\n"];
-        [self openpwnageConsoleLog:[NSString stringWithFormat: @"[*]slide=0x%08lx\n", kaslr_slide]];
-        [self openpwnageConsoleLog:@"[*]obtaining root...\n"];
-        
-        if (rootify(tfp0, kernel_base, kaslr_slide)) {
-            [self openpwnageConsoleLog:@"[*]we root baby\n"];
-        }
-        if (is_pmap_patch_success(tfp0, kernel_base, kaslr_slide)) {
-            olog("pmap patch success!\n");
-        } else {
-            olog("pmap patch no success :(\n");
-        }
-    } else if ([[NSArray arrayWithObjects:@"2784.40.6~1",@"2784.30.7~3",@"2784.30.7~1",@"2784.20.34~2",@"2783.5.38~5",@"2783.3.26~3",@"2783.3.22~1",@"2783.3.13~4",@"2783.1.72~23",@"2783.1.72~8",nil] containsObject:kver]) { //iOS 8.3-8.4.1
+    if ([[NSArray arrayWithObjects:@"2784.40.6~1",@"2784.30.7~3",@"2784.30.7~1",@"2784.20.34~2",@"2783.5.38~5",@"2783.3.26~3",@"2783.3.22~1",@"2783.3.13~4",@"2783.1.72~23",@"2783.1.72~8",nil] containsObject:kver]) { //iOS 8.3-8.4.1
         olog("starting jb\n");
         //[self openpwnageConsoleLog:@"[*]aw yeah da hot sauce\n"];
         //consoleView.text = [[NSString alloc]initWithString:[consoleView.text stringByAppendingString:@"fill me with cum already\n"]];
@@ -325,7 +296,7 @@ static id static_consoleView = nil;
 -(void)openpwnageConsoleLog: (NSString*)textToLog {
     NSLog(@"%@", [[NSString alloc]initWithString:textToLog]);
     NSMutableString *mutableLog = [consoleView.text mutableCopy];
-    
+
     consoleView.text = [[NSString alloc]initWithString:[mutableLog stringByAppendingString:textToLog]];
     /*dispatch_async(dispatch_get_main_queue(), ^{
         [consoleView setNeedsDisplay];

@@ -14,7 +14,7 @@
 #include <pthread.h>
 
 #include <mach/mach.h>
-#include <IOKit/IOKitLib.h>
+#include "IOKit/IOKitLib.h"
 
 #include "jailbreak.h"
 #include <UIKit/UIKit.h>

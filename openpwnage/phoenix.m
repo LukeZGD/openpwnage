@@ -2,8 +2,8 @@
 // Exploit by Siguza & tihmstar.
 // Thanks also to Max Bazaliy.
 
-#include <IOKit/IOKitLib.h>
-#include <IOKit/iokitmig.h>
+#include "IOKit/IOKitLib.h"
+#include "IOKit/iokitmig.h"
 #include <mach/mach.h>
 #include <string.h>            // memcpy, memset, strncmp
 #include <unistd.h>            // getpid

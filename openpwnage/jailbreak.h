@@ -5,6 +5,9 @@
 //  Created by Zachary Keffaber on 4/24/22.
 //
 
+#include <stdbool.h>
+#include <mach/mach_types.h>
+
 #ifndef jailbreak_h
 #define jailbreak_h
 

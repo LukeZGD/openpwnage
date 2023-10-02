@@ -8,7 +8,7 @@
 #ifndef kpmapAndCo_h
 #define kpmapAndCo_h
 
-void patch_kernel_pmap(tfp0, kernel_base);
+void patch_kernel_pmap(task_t tfp0, uintptr_t kernel_base);
 void pmap_unpatch(task_t tfp0);
 bool is_pmap_patch_success(task_t tfp0, uintptr_t kernel_base, uintptr_t kaslr_slide);
 bool rootify(task_t tfp0, uintptr_t kernel_base, uintptr_t kaslr_slide);

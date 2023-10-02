@@ -10,7 +10,7 @@
 #include <copyfile.h>
 #include <sys/sysctl.h>
 #include <sys/stat.h>
-#include "../jailbreak.h"
+#include "jailbreak.h"
 
 #define TTB_SIZE			4096
 #define L1_SECT_S_BIT		(1 << 16)
@@ -148,18 +148,10 @@ bool rootify(task_t tfp0, uintptr_t kernel_base, uintptr_t kaslr_slide){
         // fail
         return false;
     }
-    
+
     uint32_t proc_ucred_offset;
-    if ([[NSArray arrayWithObjects:@"3248.61.1~1",@"3248.60.9~1",@"3248.60.8~1",@"3248.60.4~1",@"3248.60.3~3",@"3248.50.21~4",@"3248.50.20~1",@"3248.50.18~1",@"3248.41.4~2",@"3248.41.4~3",@"3248.41.3~1",@"3248.40.173.0.1~1",@"3248.40.166.0.1~1",@"3248.40.155.1.1~3", nil] containsObject:KernelVersion()]) { //9.3b1-9.3.6
-        proc_ucred_offset = 0xa4;
-        olog("using 0xa4\n");
-    } else if ([[NSArray arrayWithObjects:@"3248.31.3~2",@"3248.21.2~1",@"3248.21.1~2",@"3248.20.39~8",@"3248.20.33.0.1~7",@"3248.10.42~4",@"3248.10.41~1",@"3248.10.38~3",@"3248.10.27~1",@"3789.70.16~4", nil] containsObject:KernelVersion()]){ //9.1b1-9.2.1 & 10.3.3
-        proc_ucred_offset = 0x98;
-        olog("using 0x98\n");
-    } else { //iOS 9.0b1-9.0.2 (and I think 8.4.1 too)
-        proc_ucred_offset = 0x8c;
-        olog("using 0x8c\n");
-    }
+    proc_ucred_offset = 0x8c;
+    olog("using 0x8c\n");
     
     uint32_t kern_ucred = kread_uint32(kernproc + proc_ucred_offset, tfp0);
     olog("uint32_t kern_ucred at 0x%08x\n", kern_ucred);

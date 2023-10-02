@@ -47,7 +47,6 @@ uint32_t    find_amfi_file_check_mmap                (uint32_t region, uint8_t* 
 uint32_t    find_allproc                            (uint32_t region, uint8_t* kdata, size_t ksize, char* version);
 uint32_t    find_tfp0                                (uint32_t region, uint8_t* kdata, size_t ksize, char* version);
 uint32_t find_sbops(uint32_t region, uint8_t* kdata, size_t ksize);
-uint32_t find_mount_common(uint32_t region, uint8_t* kdata, size_t ksize);
 uint32_t find_cs_enforcement_disable_amfi(uint32_t region, uint8_t* kdata, size_t ksize);
 
 #endif /* patchfinder_h */
